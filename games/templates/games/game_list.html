@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game Wishlist</title>
+</head>
+<body>
+  <h1>Game Wishlist</h1>
+
+  {% if games %}
+        <ul>
+            {% for game in games %}
+                <li>
+                    <strong>{{ game.title }}</strong> ({{ game.platform }}) — ${{ game.price }}<br>
+                    Status: {{ game.get_status_display }}
+                    {% if game.description %}<br>{{ game.description }}{% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No games added yet.</p>
+    {% endif %}
+
+</body>
+</html>

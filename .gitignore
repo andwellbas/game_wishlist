@@ -1,0 +1,25 @@
+# Env vars
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Django
+db.sqlite3
+*.log
+
+# Django migrations
+**/migrations/__pycache__/
+**/migrations/*.py
+
+# VirtualEnv
+.venv/
+venv/
+
+# IDE PyCharm
+.idea/
+
+# macOS / Windows system files
+.DS_Store
+Thumbs.db
