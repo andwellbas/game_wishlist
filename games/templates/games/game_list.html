@@ -7,12 +7,35 @@
 <body>
   <h1>Game Wishlist</h1>
 
+  <h2>Filter by Status:</h2>
+<ul>
+    <li><a href="{% url 'game_list' %}">All</a></li>
+    <li><a href="?status=wishlist">Wishlist</a></li>
+    <li><a href="?status=playing">Playing</a></li>
+    <li><a href="?status=completed">Completed</a></li>
+    <li><a href="?status=abandoned">Abandoned</a></li>
+</ul>
+
+  <a href="{% url 'add_game' %}"><button>Add Game</button></a>
+
   {% if games %}
         <ul>
             {% for game in games %}
                 <li>
-                    <strong>{{ game.title }}</strong> ({{ game.platform }}) — ${{ game.price }}<br>
-                    Status: {{ game.get_status_display }}
+                    <p>
+                        <strong>{{ game.title }}</strong> — {{ game.platform }} — {{ game.status }}
+
+                        <form action="{% url 'update_status' game.id %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                            <select name="status" onchange="this.form.submit()">
+                                {% for value, label in form.fields.status.choices %}
+                                    <option value="{{ value }}" {% if value == game.status %}selected{% endif %}>{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </form>
+
+                        <a href="{% url 'delete_game' game.id %}"><button>❌ Delete</button></a>
+                    </p>
                     {% if game.description %}<br>{{ game.description }}{% endif %}
                 </li>
             {% endfor %}
