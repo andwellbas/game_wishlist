@@ -1,48 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Game Wishlist</title>
-</head>
-<body>
-  <h1>Game Wishlist</h1>
+{% extends 'games/base.html' %}
+{% load static %}
 
-  <h2>Filter by Status:</h2>
-<ul>
-    <li><a href="{% url 'game_list' %}">All</a></li>
-    <li><a href="?status=wishlist">Wishlist</a></li>
-    <li><a href="?status=playing">Playing</a></li>
-    <li><a href="?status=completed">Completed</a></li>
-    <li><a href="?status=abandoned">Abandoned</a></li>
-</ul>
+{% block title %}Game List{% endblock %}
 
-  <a href="{% url 'add_game' %}"><button>Add Game</button></a>
+{% block content %}
+<link rel="stylesheet" href="{% static 'games/game_list.css' %}">
 
-  {% if games %}
-        <ul>
-            {% for game in games %}
-                <li>
-                    <p>
-                        <strong>{{ game.title }}</strong> — {{ game.platform }} — {{ game.status }}
+<h1>Game List</h1>
 
-                        <form action="{% url 'update_status' game.id %}" method="post" style="display: inline;">
-                        {% csrf_token %}
-                            <select name="status" onchange="this.form.submit()">
-                                {% for value, label in form.fields.status.choices %}
-                                    <option value="{{ value }}" {% if value == game.status %}selected{% endif %}>{{ label }}</option>
-                                {% endfor %}
-                            </select>
-                        </form>
+<label for="status-select">Filter by status:</label>
+<select id="status-select">
+    <option value="">All</option>
+    <option value="wishlist" {% if status_filter == "wishlist" %}selected{% endif %}>Wishlist</option>
+    <option value="playing" {% if status_filter == "playing" %}selected{% endif %}>Playing</option>
+    <option value="completed" {% if status_filter == "completed" %}selected{% endif %}>Completed</option>
+    <option value="abandoned" {% if status_filter == "abandoned" %}selected{% endif %}>Abandoned</option>
+</select>
 
-                        <a href="{% url 'delete_game' game.id %}"><button>❌ Delete</button></a>
-                    </p>
-                    {% if game.description %}<br>{{ game.description }}{% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No games added yet.</p>
-    {% endif %}
+<div id="games-container">
+    {% for game in games %}
+        <div class="game-card">
+            <h2>{{ game.title }}</h2>
+            <p>Platform: {{ game.platform }}</p>
+            <p>Status: {{ game.status }}</p>
+            <p>Price: ${{ game.price }}</p>
+        </div>
+    {% empty %}
+        <p>No games found for this status.</p>
+    {% endfor %}
+</div>
 
-</body>
-</html>
+<script>
+        document.getElementById("status-select").addEventListener("change", function() {
+        const selectedStatus = this.value;
+        const url = selectedStatus ? `?status=${selectedStatus}` : window.location.pathname;
+        window.location.href = url;
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,19 @@
+form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+    max-width: 400px;
+}
+
+form input, form select, form textarea {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+form button {
+    width: 100%;
+}
