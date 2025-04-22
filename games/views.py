@@ -1,5 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .serializers import GameSerializer
+
 from .models import Game, STATUS_CHOICES
 from .forms import GameForm
 
@@ -45,3 +50,10 @@ def update_status(request, game_id):
         game.status = new_status
         game.save()
     return redirect("game_list")
+
+
+@api_view(['GET'])
+def game_list_api(request):
+    games = Game.objects.all()
+    serializer = GameSerializer(games, many=True)
+    return Response(serializer.data)
