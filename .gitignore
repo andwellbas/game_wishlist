@@ -4,6 +4,8 @@
 # Python
 __pycache__/
 *.py[cod]
+*.pyo
+*.pyd
 
 # Django
 db.sqlite3
@@ -23,3 +25,9 @@ venv/
 # macOS / Windows system files
 .DS_Store
 Thumbs.db
+
+#  Docker
+.dockerignore
+docker-compose.override.yml
+*.pid
+*.seed
